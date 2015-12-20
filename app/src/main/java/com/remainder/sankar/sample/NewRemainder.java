@@ -26,8 +26,11 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.sql.Time;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import Listeners.DateClickListener;
+import Listeners.RemainderTypeListener;
 import Listeners.TimeClickListener;
 
 
@@ -58,6 +61,16 @@ public class NewRemainder extends AppCompatActivity {
 
         //Phone number fetcher
         final View contacts = findViewById (R.id.fetch_contacts);
+        final View contactsButton = findViewById(R.id.fetch_contacts_button);
+
+        contactsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(NewRemainder.this, ContactListActvity.class);
+                NewRemainder.this.startActivity(myIntent);
+
+            }
+        });
 
         //Spinner
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -65,34 +78,17 @@ public class NewRemainder extends AppCompatActivity {
         MaterialBetterSpinner remainderType = (MaterialBetterSpinner)
                 findViewById(R.id.type);
         remainderType.setAdapter(adapter);
-        remainderType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("********************");
-                System.out.println("Spinner selected");
-                System.out.println("Spinner position:"+position);
-                System.out.println("Spinner selection:"+adapter.getItem(position));
-                System.out.println("********************");
 
-                if ("PHONE" == adapter.getItem(position)
-                        || "MESSAGE" == adapter.getItem(position)) {
-                    contacts.setEnabled(true);
+        Set<String> contactEnableStrings = new HashSet<>();
+        contactEnableStrings.add("PHONE");
+        contactEnableStrings.add("MESSAGE");
 
-                }
+        Set<View> viewsToEnable = new HashSet<>();
+        viewsToEnable.add(contacts);
+        viewsToEnable.add(contactsButton);
 
-            }
-        });
-
-
-        //Edit Text for time Contcats
-
-        contacts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(NewRemainder.this, ContactListActvity.class);
-                NewRemainder.this.startActivity(myIntent);
-            }
-        });
+        RemainderTypeListener itemClickListener = new RemainderTypeListener (adapter, contactEnableStrings, true, viewsToEnable);
+        remainderType.setOnItemClickListener(itemClickListener);
 
 
         //Edit Text for time selection

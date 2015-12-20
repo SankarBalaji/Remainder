@@ -15,8 +15,10 @@ import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import Adapters.MyContactsAdapter;
@@ -30,7 +32,8 @@ public class ContactListActvity extends ListActivity {
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Phone.PHOTO_URI,
             ContactsContract.CommonDataKinds.Phone.NUMBER,
-            ContactsContract.CommonDataKinds.Phone.PHOTO_ID
+            ContactsContract.CommonDataKinds.Phone.PHOTO_ID,
+            ContactsContract.CommonDataKinds.Phone.TYPE
 
     };
 
@@ -39,7 +42,7 @@ public class ContactListActvity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         List<MyContacts> contactsList = new ArrayList<>();
-        Set<String> contacts = new HashSet<String>();
+        Map<String, MyContacts> contacts = new HashMap<>();
         //Load Contacts
         CursorLoader loader = new CursorLoader(this, CONTACTS_URI, CONTACTS_PROJECTION, null, null, null);
         Cursor cursor = loader.loadInBackground();
@@ -54,6 +57,7 @@ public class ContactListActvity extends ListActivity {
             String photoUri = cursor.getString(cursor.getColumnIndex(CONTACTS_PROJECTION[2]));
             String phoneNumber = cursor.getString(cursor.getColumnIndex(CONTACTS_PROJECTION[3]));
             long photoId = cursor.getLong(cursor.getColumnIndex(CONTACTS_PROJECTION[4]));
+            int type = cursor.getInt(cursor.getColumnIndex(CONTACTS_PROJECTION[5]));
 
             System.out.println("******************************");
             System.out.println("Contact ID :"+id);
@@ -61,10 +65,18 @@ public class ContactListActvity extends ListActivity {
             System.out.println("Contact photo URI :"+photoUri);
             System.out.println("Contact number :"+phoneNumber);
             System.out.println("Contact Photo ID :"+photoId);
+            System.out.println("Contact Phone Type :"+type);
             System.out.println("******************************");
-            if (contacts.add(name))
-                contactsList.add(new MyContacts (id, name, photoUri, photoId));
+            if (null == contacts.get(name)) {
+                MyContacts contactToAdd = new MyContacts(id, name, photoUri, photoId);
+                contactToAdd.addNumber(type, phoneNumber);
+                contacts.put(name, contactToAdd);
+            } else {
+                contacts.get(name).addNumber(type, phoneNumber);
+            }
         } while (cursor.moveToNext());
+
+        contactsList.addAll(contacts.values());
 
         MyContactsAdapter contactsAdapter = new MyContactsAdapter(this, contactsList);
         setListAdapter(contactsAdapter);
@@ -74,7 +86,14 @@ public class ContactListActvity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         MyContacts contact = (MyContacts) getListAdapter().getItem(position);
-        System.out.println("Selected Contact:"+contact.getName());
+        System.out.println("Selected Contact Name:" + contact.getName());
+        Map<Integer, Set<String>> phonenumbers = contact.getAllPhonenumbers();
+        for (int type : phonenumbers.keySet()) {
+            Set<String> numbers = phonenumbers.get(type);
+            for (String number : numbers) {
+                System.out.println("Selected Contact Type:" + type+":Number:"+number);
+            }
+        }
     }
 
 

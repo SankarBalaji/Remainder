@@ -30,24 +30,36 @@
         android:dropDownWidth="match_parent"
         android:spinnerMode="dropdown"
         android:text="Remainder Type"/>
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_fetch_contacts"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/type">
+        android:orientation="horizontal"
+        android:layout_below="@+id/type"
+        android:id="@+id/input_layout_fetch_contacts_frame">
         <EditText
             android:id="@+id/fetch_contacts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Phone number"
+            android:layout_weight="1"
             android:enabled="false"
-            android:drawableRight="@drawable/ic_fetch_contacts"/>
-    </android.support.design.widget.TextInputLayout>
+            android:inputType="phone"
+            />
+        <ImageButton
+            android:id="@+id/fetch_contacts_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_weight="6"
+            android:enabled="false"
+            android:src="@drawable/ic_fetch_contacts"
+            />
+    </LinearLayout>
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_start_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/input_layout_fetch_contacts">
+        android:layout_below="@+id/input_layout_fetch_contacts_frame">
         <EditText
             android:id="@+id/start_date"
             android:layout_width="match_parent"
