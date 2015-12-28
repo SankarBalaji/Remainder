@@ -6,6 +6,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.Contacts;
@@ -58,7 +59,9 @@ public class MyContactsAdapter extends ArrayAdapter<MyContacts> {
             Uri contactURI = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, myContacts.get(position).getId());
             InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(context.getApplicationContext().getContentResolver(), contactURI);
             if (null != input) {
-                contactPhoto.setImageBitmap(BitmapFactory.decodeStream(input));
+                Bitmap picture = BitmapFactory.decodeStream(input);
+                myContacts.get(position).setContactPicture(picture);
+                contactPhoto.setImageBitmap(picture);
 
             } else {
 
@@ -71,7 +74,9 @@ public class MyContactsAdapter extends ArrayAdapter<MyContacts> {
                 if (cursor.moveToFirst())
                     photoBytes = cursor.getBlob(0);
                 if (null != photoBytes) {
-                    contactPhoto.setImageBitmap(BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length));
+                    Bitmap picture = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
+                    myContacts.get(position).setContactPicture(picture);
+                    contactPhoto.setImageBitmap(picture);
                 } else {
                     contactPhoto.setImageResource(R.drawable.contacts);
                 }

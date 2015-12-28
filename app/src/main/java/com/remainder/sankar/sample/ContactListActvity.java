@@ -1,10 +1,16 @@
 package com.remainder.sankar.sample;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ListActivity;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -94,6 +100,11 @@ public class ContactListActvity extends ListActivity {
                 System.out.println("Selected Contact Type:" + type+":Number:"+number);
             }
         }
+        Intent myIntent = new Intent(ContactListActvity.this, IndividualContactActivity.class);;
+        myIntent.putExtra("contact", contact);
+        myIntent.putExtra("picture", contact.getContactPicture());
+        ContactListActvity.this.startActivity(myIntent);
+
     }
 
 
