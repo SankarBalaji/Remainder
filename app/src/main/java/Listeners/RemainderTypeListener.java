@@ -45,6 +45,8 @@ public class RemainderTypeListener implements AdapterView.OnItemClickListener {
             System.out.println("Enabling action:"+actionToPerform);
             System.out.println("********************************");
             actionableView.setEnabled(actionToPerform);
+            actionableView.setFocusable(actionToPerform);
+            actionableView.setClickable(actionToPerform);
         }
 
     }

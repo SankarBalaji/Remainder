@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
@@ -32,6 +33,7 @@ import java.util.Set;
 import Listeners.DateClickListener;
 import Listeners.RemainderTypeListener;
 import Listeners.TimeClickListener;
+import Utils.Constants;
 
 
 public class NewRemainder extends AppCompatActivity {
@@ -61,13 +63,22 @@ public class NewRemainder extends AppCompatActivity {
 
         //Phone number fetcher
         final View contacts = findViewById (R.id.fetch_contacts);
+        contacts.setEnabled(false);
         final View contactsButton = findViewById(R.id.fetch_contacts_button);
+        contactsButton.setEnabled(false);
 
         contactsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(NewRemainder.this, ContactListActvity.class);
-                NewRemainder.this.startActivity(myIntent);
+                if (v.isEnabled()) {
+                    Intent myIntent = new Intent(NewRemainder.this, ContactListActvity.class);
+                    startActivityForResult(myIntent, Constants.REQUEST_NEWREM_CONTACTLIST);
+                } else {
+                    //Do nothing
+                    Toast.makeText(getApplicationContext(),
+                            "Please select a Remainder type", Toast.LENGTH_LONG).show();
+                }
+
 
             }
         });
@@ -109,6 +120,18 @@ public class NewRemainder extends AppCompatActivity {
         activity = this;
 
 
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.REQUEST_NEWREM_CONTACTLIST) {
+            if(resultCode == Constants.RESULT_SUCCESS){
+                String phonenumber=data.getStringExtra("phonenumber");
+                EditText number = (EditText)findViewById(R.id.fetch_contacts);
+                number.setText(phonenumber);
+
+            }
+        }
     }
 
     class OkBtnListener implements View.OnClickListener {

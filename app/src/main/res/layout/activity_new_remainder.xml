@@ -42,7 +42,6 @@
             android:layout_height="wrap_content"
             android:hint="Phone number"
             android:layout_weight="1"
-            android:enabled="false"
             android:inputType="phone"
             />
         <ImageButton
@@ -51,7 +50,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:layout_weight="6"
-            android:enabled="false"
             android:src="@drawable/ic_fetch_contacts"
             />
     </LinearLayout>

@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import Adapters.MyContactsAdapter;
+import Utils.Constants;
 import Utils.MyContacts;
 
 
@@ -103,8 +104,22 @@ public class ContactListActvity extends ListActivity {
         Intent myIntent = new Intent(ContactListActvity.this, IndividualContactActivity.class);;
         myIntent.putExtra("contact", contact);
         myIntent.putExtra("picture", contact.getContactPicture());
-        ContactListActvity.this.startActivity(myIntent);
+        startActivityForResult(myIntent, Constants.REQUEST_CONTACTLIST_CONTACT);
 
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.REQUEST_CONTACTLIST_CONTACT) {
+            if(resultCode == Constants.RESULT_SUCCESS){
+                String phonenumber=data.getStringExtra("phonenumber");
+
+                Intent intent = new Intent();
+                intent.putExtra("phonenumber",phonenumber);
+                setResult(Constants.RESULT_SUCCESS, intent);
+                finish();
+            }
+        }
     }
 
 
