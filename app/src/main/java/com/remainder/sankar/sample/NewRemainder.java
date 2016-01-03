@@ -31,6 +31,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import Listeners.DateClickListener;
+import Listeners.NewRemainderCancelBtnListener;
+import Listeners.NewRemainderOkBtnListener;
 import Listeners.RemainderTypeListener;
 import Listeners.TimeClickListener;
 import Utils.Constants;
@@ -40,8 +42,6 @@ public class NewRemainder extends AppCompatActivity {
     private static final String[] TYPE = new String[] {
             "PHONE", "MESSAGE"
     };
-
-    static AppCompatActivity activity;
     LinearLayout contactsLayout;
 
     @Override
@@ -112,13 +112,13 @@ public class NewRemainder extends AppCompatActivity {
 
         //OK Button pressed
         AppCompatButton okbtn = (AppCompatButton)findViewById(R.id.okbtn);
-        okbtn.setOnClickListener(new OkBtnListener ());
+        NewRemainderOkBtnListener okBtnListener = new NewRemainderOkBtnListener(this);
+        okbtn.setOnClickListener(okBtnListener);
 
         //Cancel Button pressed
         AppCompatButton cancelbtn = (AppCompatButton)findViewById(R.id.cancelbtn);
-        cancelbtn.setOnClickListener(new CancelBtnListener ());
-        activity = this;
-
+        NewRemainderCancelBtnListener cancelBtnListener = new NewRemainderCancelBtnListener(this);
+        cancelbtn.setOnClickListener(cancelBtnListener);
 
     }
 
@@ -131,56 +131,6 @@ public class NewRemainder extends AppCompatActivity {
                 number.setText(phonenumber);
 
             }
-        }
-    }
-
-    class OkBtnListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-
-            EditText descText = (EditText)findViewById(R.id.fName);
-            String desc= descText.getText().toString();
-            MaterialBetterSpinner spinner = (MaterialBetterSpinner)findViewById(R.id.type);
-            String type = spinner.getText().toString();
-            EditText dateText = (EditText)findViewById(R.id.start_date);
-            String date= dateText.getText().toString();
-            EditText timeText = (EditText)findViewById(R.id.start_time);
-            String time= timeText.getText().toString();
-
-            System.out.println("**************************");
-            System.out.println("Ok clicked");
-            System.out.println("Desc:"+desc);
-            System.out.println("Type:"+type);
-            System.out.println("Date:"+date);
-            System.out.println("Time:"+time);
-            System.out.println("**************************");
-            DatabaseAPI db = new DatabaseAPI();
-            db.insertNewRemainder(activity, desc, type, date, time, 1);
-            finish();
-
-        }
-    }
-    class CancelBtnListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            System.out.println("**************************");
-            System.out.println("cancel clicked");
-            System.out.println("**************************");
-            finish();
-
-        }
-    }
-
-    class TimePickerListener implements TimePickerDialog.OnTimeSetListener {
-
-        @Override
-        public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-            EditText time = (EditText)findViewById(R.id.start_time);
-            String timeToSet = hourOfDay +":"+minute;
-            time.setText(timeToSet);
-
         }
     }
 

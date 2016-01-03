@@ -32,7 +32,7 @@
         </activity>
         <activity
             android:name=".IndividualContactActivity"
-            android:label="@string/title_activity_individual_contact"
+            android:label="IndividualContactActivity"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
