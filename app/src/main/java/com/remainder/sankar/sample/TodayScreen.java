@@ -23,9 +23,21 @@ import Listeners.DateClickListener;
 
 public class TodayScreen extends AppCompatActivity {
 
+    public static volatile AppCompatActivity dbContext;
+    private static volatile boolean dbCleanupDone = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbContext = this;
+        //Clear and recreate tables , used only in testing
+        DatabaseAPI db = DatabaseAPI.getDatabaseHandler(dbContext);
+        System.out.println ("Require DB Cleanup:????"+!dbCleanupDone);
+        if (!dbCleanupDone) {
+            db.clearDB();
+            dbCleanupDone = true;
+        }
+        //Create
         setContentView(R.layout.activity_today_screen);
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setActionBar(tb);
@@ -42,7 +54,6 @@ public class TodayScreen extends AppCompatActivity {
             }
         });
         System.out.println("I am back after finishing the activity *********************");
-        DatabaseAPI db = new DatabaseAPI ();
         String result = db.getAllRemainder(this);
         System.out.println("GOT result:*************" + result);
         TextView textView = (TextView)findViewById(R.id.textsample);

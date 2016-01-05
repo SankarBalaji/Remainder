@@ -20,7 +20,7 @@ class DatePickerListener implements DatePickerDialog.OnDateSetListener {
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String day = "";
+        String day = ""+dayOfMonth;
         if (dayOfMonth < 10)
             day = "0"+dayOfMonth;
         String month = "";

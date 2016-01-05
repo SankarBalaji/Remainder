@@ -10,19 +10,39 @@ import java.util.Random;
  * Created by root on 9/12/15.
  */
 public class DatabaseAPI {
-    public DatabaseAPI (){
+    private final AppCompatActivity activity;
+    private DatabaseAPI (AppCompatActivity activity){
+        this.activity = activity;
+    }
+    private volatile static DatabaseAPI dbHandler;
+    private volatile static DBHelper db;
 
+    public static DatabaseAPI getDatabaseHandler (AppCompatActivity activity){
+       if (null == dbHandler) {
+           synchronized (new Object()) {
+               if (null == dbHandler) {
+                   dbHandler = new DatabaseAPI (activity);
+                   db = new DBHelper (activity);
+               }
+           }
+       }
+        return dbHandler;
+    }
+
+    //USed only in testing
+    public void clearDB (){
+        db.clearTablesOnInstall();
     }
 
     public boolean insertNewRemainder (AppCompatActivity activity, String desc, String type, String date, String time, int recurrency){
-        DBHelper helper = new DBHelper (activity);
-        return helper.insertRemainder (1, desc, type, date, time, 1);
+        int remId = db.getLastRemainderId();
+        remId = remId + 1;
+        return db.insertRemainder (remId, desc, type, date, time, 1);
     }
 
     public String getRemainder (Activity activity){
-        DBHelper helper = new DBHelper (activity);
         Random r = new Random();
-        Cursor currentCursor = helper.getRemainder(r.nextInt());
+        Cursor currentCursor = db.getRemainder(r.nextInt());
         int id = currentCursor.getInt(0);
         String desc = currentCursor.getString(1);
         String type = currentCursor.getString(2);
@@ -34,9 +54,7 @@ public class DatabaseAPI {
     }
 
     public String getAllRemainder (Activity activity){
-        DBHelper helper = new DBHelper (activity);
-
-        return helper.getAllRemainder();
+        return db.getAllRemainder();
     }
 
 

@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.remainder.sankar.sample.DatabaseAPI;
 import com.remainder.sankar.sample.R;
+import com.remainder.sankar.sample.TodayScreen;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.util.Calendar;
@@ -16,26 +17,23 @@ import Utils.Month;
 /**
  * Created by root on 3/1/16.
  */
-public class NewRemainderOkBtnListener implements View.OnClickListener {
-    AppCompatActivity newRemainderActivity;
+public class NewRemainderOkBtnListener extends AbstractListener {
 
     public NewRemainderOkBtnListener (AppCompatActivity activity){
-        this.newRemainderActivity = activity;
+        super (activity);
     }
     @Override
     public void onClick(View v) {
 
-
-
-        EditText descText = (EditText)newRemainderActivity.findViewById(R.id.fName);
+        EditText descText = (EditText)this.listenerActivity.findViewById(R.id.fName);
         String desc= descText.getText().toString();
-        MaterialBetterSpinner spinner = (MaterialBetterSpinner)newRemainderActivity.findViewById(R.id.type);
+        MaterialBetterSpinner spinner = (MaterialBetterSpinner)this.listenerActivity.findViewById(R.id.type);
         String type = spinner.getText().toString();
-        EditText dateText = (EditText)newRemainderActivity.findViewById(R.id.start_date);
+        EditText dateText = (EditText)this.listenerActivity.findViewById(R.id.start_date);
         String date= dateText.getText().toString();
-        EditText timeText = (EditText)newRemainderActivity.findViewById(R.id.start_time);
+        EditText timeText = (EditText)this.listenerActivity.findViewById(R.id.start_time);
         String time= timeText.getText().toString();
-        EditText phoneNumberText = (EditText)newRemainderActivity.findViewById(R.id.fetch_contacts);
+        EditText phoneNumberText = (EditText)this.listenerActivity.findViewById(R.id.fetch_contacts);
         String phoneNumber = phoneNumberText.getText().toString();
 
         System.out.println("**************************");
@@ -46,10 +44,10 @@ public class NewRemainderOkBtnListener implements View.OnClickListener {
         System.out.println("Time:"+time);
         System.out.println("PhoneNumber:"+phoneNumber);
         System.out.println("**************************");
-        DatabaseAPI db = new DatabaseAPI();
+        DatabaseAPI db = DatabaseAPI.getDatabaseHandler(TodayScreen.dbContext);
         if (validateInputs (desc, date, time, phoneNumber)) {
-            db.insertNewRemainder(newRemainderActivity, desc, type, date, time, 1);
-            newRemainderActivity.finish();
+            db.insertNewRemainder(this.listenerActivity, desc, type, date, time, 1);
+            this.listenerActivity.finish();
         }
     }
 
@@ -106,6 +104,6 @@ public class NewRemainderOkBtnListener implements View.OnClickListener {
     }
 
     private void displayToast (String message, int duration){
-        Toast.makeText(this.newRemainderActivity, message, duration).show();
+        Toast.makeText(this.listenerActivity, message, duration).show();
     }
 }
