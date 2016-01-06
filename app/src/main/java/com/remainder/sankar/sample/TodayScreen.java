@@ -2,6 +2,7 @@ package com.remainder.sankar.sample;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.design.widget.FloatingActionButton;
@@ -14,25 +15,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-
 import java.util.Calendar;
 
+import Utils.AppConstants;
+
 import Listeners.DateClickListener;
+import Utils.AppUtils;
 
 
 public class TodayScreen extends AppCompatActivity {
 
     public static volatile AppCompatActivity dbContext;
     private static volatile boolean dbCleanupDone = false;
+    private static volatile DatabaseAPI db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbContext = this;
         //Clear and recreate tables , used only in testing
-        DatabaseAPI db = DatabaseAPI.getDatabaseHandler(dbContext);
-        System.out.println ("Require DB Cleanup:????"+!dbCleanupDone);
+        db = DatabaseAPI.getDatabaseHandler(dbContext);
+        System.out.println("Require DB Cleanup:????" + !dbCleanupDone);
         if (!dbCleanupDone) {
             db.clearDB();
             dbCleanupDone = true;
@@ -53,17 +57,15 @@ public class TodayScreen extends AppCompatActivity {
                 TodayScreen.this.startActivity(myIntent);
             }
         });
-        System.out.println("I am back after finishing the activity *********************");
-        String result = db.getAllRemainder(this);
-        System.out.println("GOT result:*************" + result);
-        TextView textView = (TextView)findViewById(R.id.textsample);
-        textView.setText(result);
+
 
         //Today's screen date filter
         View dateFilter = actionBar.getCustomView().findViewById(R.id.searchfield);
         DateClickListener dateListener = new DateClickListener(getFragmentManager(), dateFilter);
         dateFilter.setOnClickListener(dateListener);
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,4 +89,40 @@ public class TodayScreen extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println("I am in start");
+        System.out.println("I am back after finishing the activity *********************");
+        EditText searchDateField = (EditText)getActionBar().getCustomView().findViewById(R.id.searchfield);
+        String searchDate = searchDateField.getText().toString();
+        System.out.println("Date to search:" + searchDate);
+        if ( searchDate!= null && AppConstants.TODAY.equalsIgnoreCase(searchDate)) {
+            long now = System.currentTimeMillis();
+            Calendar today = Calendar.getInstance();
+            today.setTimeInMillis(now);
+            int year = today.get(Calendar.YEAR);
+            System.out.println("Date to search:YEAR" + year);
+            int monthOfYear = today.get(Calendar.MONTH);
+            System.out.println("Date to search:Month" + monthOfYear);
+            int dayOfMonth = today.get(Calendar.DAY_OF_MONTH);
+            System.out.println("Date to search:day" + dayOfMonth);
+            searchDate = AppUtils.getDateString(year, monthOfYear, dayOfMonth);
+        }
+        System.out.println("Date to search:" + searchDate);
+        String result = db.getAllRemainder(searchDate);
+        System.out.println("GOT result:*************" + result);
+        TextView textView = (TextView) findViewById(R.id.textsample);
+        textView.setText(result);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("I am in resume");
+
+    }
+
 }

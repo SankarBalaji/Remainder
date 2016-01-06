@@ -34,7 +34,7 @@ public class DatabaseAPI {
         db.clearTablesOnInstall();
     }
 
-    public boolean insertNewRemainder (AppCompatActivity activity, String desc, String type, String date, String time, int recurrency){
+    public boolean insertNewRemainder (String desc, String type, String date, String time, int recurrency){
         int remId = db.getLastRemainderId();
         remId = remId + 1;
         return db.insertRemainder (remId, desc, type, date, time, 1);
@@ -53,7 +53,7 @@ public class DatabaseAPI {
         return result;
     }
 
-    public String getAllRemainder (Activity activity){
+    public String getAllRemainder (String date){
         return db.getAllRemainder();
     }
 

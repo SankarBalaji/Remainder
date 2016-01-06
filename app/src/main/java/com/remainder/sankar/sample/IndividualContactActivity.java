@@ -3,16 +3,11 @@ package com.remainder.sankar.sample;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -27,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import Adapters.IndividualPhoneNumberAdapter;
-import Utils.Constants;
+import Utils.AppConstants;
 import Utils.MyContacts;
 import Utils.PhoneNumber;
 
@@ -104,7 +99,7 @@ public class IndividualContactActivity extends AppCompatActivity implements Adap
         //Pass back the value
         Intent intent = new Intent();
         intent.putExtra("phonenumber", number.getNumber());
-        setResult(Constants.RESULT_SUCCESS, intent);
+        setResult(AppConstants.RESULT_SUCCESS, intent);
         finish();
     }
 }

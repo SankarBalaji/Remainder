@@ -2,31 +2,20 @@ package com.remainder.sankar.sample;
 
 
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.support.v7.widget.SwitchCompat;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
-import java.sql.Time;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,7 +24,7 @@ import Listeners.NewRemainderCancelBtnListener;
 import Listeners.NewRemainderOkBtnListener;
 import Listeners.RemainderTypeListener;
 import Listeners.TimeClickListener;
-import Utils.Constants;
+import Utils.AppConstants;
 
 
 public class NewRemainder extends AppCompatActivity {
@@ -72,7 +61,7 @@ public class NewRemainder extends AppCompatActivity {
             public void onClick(View v) {
                 if (v.isEnabled()) {
                     Intent myIntent = new Intent(NewRemainder.this, ContactListActvity.class);
-                    startActivityForResult(myIntent, Constants.REQUEST_NEWREM_CONTACTLIST);
+                    startActivityForResult(myIntent, AppConstants.REQUEST_NEWREM_CONTACTLIST);
                 } else {
                     //Do nothing
                     Toast.makeText(getApplicationContext(),
@@ -124,8 +113,8 @@ public class NewRemainder extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.REQUEST_NEWREM_CONTACTLIST) {
-            if(resultCode == Constants.RESULT_SUCCESS){
+        if (requestCode == AppConstants.REQUEST_NEWREM_CONTACTLIST) {
+            if(resultCode == AppConstants.RESULT_SUCCESS){
                 String phonenumber=data.getStringExtra("phonenumber");
                 EditText number = (EditText)findViewById(R.id.fetch_contacts);
                 number.setText(phonenumber);

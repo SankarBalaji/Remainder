@@ -99,7 +99,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(REMAINDERS_COLUMN_TYPE, type);
         contentValues.put(REMAINDERS_COLUMN_DATE, date);
         contentValues.put(REMAINDERS_COLUMN_TIME, time);
-        contentValues.put(REMAINDERS_COLUMN_RECURRENT , recurrent);
+        contentValues.put(REMAINDERS_COLUMN_RECURRENT, recurrent);
         db.insert(REMAINDERS_TABLE_NAME, null, contentValues);
         return true;
     }
@@ -143,6 +143,37 @@ public class DBHelper extends SQLiteOpenHelper {
         res.moveToFirst();
         int lastRemId = res.getInt(res.getColumnIndex(REMAINDERS_TABLE_PRIMARYKEY_COLUMN_ID));
         return lastRemId;
+    }
+
+    public String getAllRemainder(String date)
+    {
+        ArrayList<String> array_list = new ArrayList<String>();
+
+        //hp = new HashMap();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String tableToQuery =  REMAINDERS_TABLE_NAME;
+        String[] columnsToReturn = new String[] {REMAINDERS_COLUMN_ID, REMAINDERS_COLUMN_DESCRIPTION,
+                REMAINDERS_COLUMN_TYPE,REMAINDERS_COLUMN_DATE,REMAINDERS_COLUMN_TIME, REMAINDERS_COLUMN_RECURRENT};
+        String selection = REMAINDERS_COLUMN_DATE+" =?";
+        String[] selectionArgs = {date};
+        Cursor res = db.query(tableToQuery, columnsToReturn, selection, selectionArgs, null, null, null);
+        res.moveToFirst();
+        StringBuffer result = new StringBuffer();
+        result.append("I am in DBBBBBBBBBB");
+        while(res.isAfterLast() == false){
+            StringBuffer str= new StringBuffer();
+            str.append("******************");
+            str.append("ID:"+res.getInt(res.getColumnIndex(REMAINDERS_COLUMN_ID)));
+            str.append("Desc:" + res.getString(res.getColumnIndex(REMAINDERS_COLUMN_DESCRIPTION)));
+            str.append("type:" + res.getString(res.getColumnIndex(REMAINDERS_COLUMN_TYPE)));
+            str.append("date:" + res.getString(res.getColumnIndex(REMAINDERS_COLUMN_DATE)));
+            str.append("time:" + res.getString(res.getColumnIndex(REMAINDERS_COLUMN_TIME)));
+            str.append("Recurrenct:"+res.getInt(res.getColumnIndex(REMAINDERS_COLUMN_RECURRENT)));
+            str.append("******************");
+            result.append(str.toString());
+            res.moveToNext();
+        }
+        return result.toString();
     }
 
     public String getAllRemainder()

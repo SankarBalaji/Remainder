@@ -1,34 +1,23 @@
 package com.remainder.sankar.sample;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ListActivity;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.provider.ContactsContract;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.CursorLoader;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import Adapters.MyContactsAdapter;
-import Utils.Constants;
+import Utils.AppConstants;
 import Utils.MyContacts;
 
 
@@ -104,19 +93,19 @@ public class ContactListActvity extends ListActivity {
         Intent myIntent = new Intent(ContactListActvity.this, IndividualContactActivity.class);;
         myIntent.putExtra("contact", contact);
         myIntent.putExtra("picture", contact.getContactPicture());
-        startActivityForResult(myIntent, Constants.REQUEST_CONTACTLIST_CONTACT);
+        startActivityForResult(myIntent, AppConstants.REQUEST_CONTACTLIST_CONTACT);
 
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.REQUEST_CONTACTLIST_CONTACT) {
-            if(resultCode == Constants.RESULT_SUCCESS){
+        if (requestCode == AppConstants.REQUEST_CONTACTLIST_CONTACT) {
+            if(resultCode == AppConstants.RESULT_SUCCESS){
                 String phonenumber=data.getStringExtra("phonenumber");
 
                 Intent intent = new Intent();
                 intent.putExtra("phonenumber",phonenumber);
-                setResult(Constants.RESULT_SUCCESS, intent);
+                setResult(AppConstants.RESULT_SUCCESS, intent);
                 finish();
             }
         }

@@ -46,7 +46,7 @@ public class NewRemainderOkBtnListener extends AbstractListener {
         System.out.println("**************************");
         DatabaseAPI db = DatabaseAPI.getDatabaseHandler(TodayScreen.dbContext);
         if (validateInputs (desc, date, time, phoneNumber)) {
-            db.insertNewRemainder(this.listenerActivity, desc, type, date, time, 1);
+            db.insertNewRemainder(desc, type, date, time, 1);
             this.listenerActivity.finish();
         }
     }

@@ -6,6 +6,7 @@ import android.widget.EditText;
 import com.remainder.sankar.sample.R;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import Utils.AppUtils;
 import Utils.Month;
 
 /**
@@ -20,15 +21,7 @@ class DatePickerListener implements DatePickerDialog.OnDateSetListener {
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String day = ""+dayOfMonth;
-        if (dayOfMonth < 10)
-            day = "0"+dayOfMonth;
-        String month = "";
-        Month monthEnum = Month.getMonth(monthOfYear);
-        if (null != monthEnum)
-            month = monthEnum.getMonthDescription();
-
-        String date = day +"-"+month+"-"+year;
+        String date = AppUtils.getDateString(year,monthOfYear,dayOfMonth);
         if (viewToSet instanceof EditText)
             ((EditText)viewToSet).setText(date);
     }

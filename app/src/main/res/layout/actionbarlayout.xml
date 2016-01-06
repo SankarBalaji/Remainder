@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:inputType="textFilter"
         android:hint="Today"
+        android:text="Today"
         android:focusable="false">
     </EditText>
 </RelativeLayout>
