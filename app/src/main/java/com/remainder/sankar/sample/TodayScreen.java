@@ -141,6 +141,8 @@ public class TodayScreen extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.textsample);
         textView.setText(result);
 
+        AlarmSetter.setAlarm(this);
+
     }
 
     @Override
