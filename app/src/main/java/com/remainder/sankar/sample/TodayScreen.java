@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,6 +66,28 @@ public class TodayScreen extends AppCompatActivity {
         DateClickListener dateListener = new DateClickListener(getFragmentManager(), dateFilter);
         dateFilter.setOnClickListener(dateListener);
 
+        ((EditText)dateFilter).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                System.out.println("Text changed to:"+s.toString());
+                System.out.println("Date to search:" + s.toString());
+                String result = db.getAllRemainder(s.toString());
+                System.out.println("GOT result:*************" + result);
+                TextView textView = (TextView) findViewById(R.id.textsample);
+                textView.setText(result);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
 
@@ -96,6 +120,7 @@ public class TodayScreen extends AppCompatActivity {
         System.out.println("I am in start");
         System.out.println("I am back after finishing the activity *********************");
         EditText searchDateField = (EditText)getActionBar().getCustomView().findViewById(R.id.searchfield);
+        searchDateField.setText(AppConstants.TODAY);
         String searchDate = searchDateField.getText().toString();
         System.out.println("Date to search:" + searchDate);
         if ( searchDate!= null && AppConstants.TODAY.equalsIgnoreCase(searchDate)) {

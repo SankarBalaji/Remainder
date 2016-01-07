@@ -38,6 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String REMAINDERS_COLUMN_RECURRENT = "Recurrent";
 
     //remainder_number
+    private static final String REMAINDERS_TABLE_PRIMARYKEY_COLUMN_ROW ="Row";
     private static final String REMAINDERS_TABLE_PRIMARYKEY_COLUMN_ID ="Id";
 
 
@@ -54,7 +55,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+REMAINDERS_TABLE_PRIMARYKEY);
 
         //Create Tables
-        db.execSQL("create table "+REMAINDERS_TABLE_PRIMARYKEY+" ("+REMAINDERS_TABLE_PRIMARYKEY_COLUMN_ID+" integer primary key)");
+        db.execSQL("create table "+REMAINDERS_TABLE_PRIMARYKEY+" ("+REMAINDERS_TABLE_PRIMARYKEY_COLUMN_ROW+" integer primary key,"+REMAINDERS_TABLE_PRIMARYKEY_COLUMN_ID+" integer)");
         db.execSQL(
                 "create table " + REMAINDERS_TABLE_NAME +
                         "("+REMAINDERS_COLUMN_ID+" integer primary key, "
@@ -64,7 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         +REMAINDERS_COLUMN_TIME+" text,"
                         +REMAINDERS_COLUMN_RECURRENT+" integer)"
         );
-        updateRemainderId(0);
+        updateRemainderId(0, 0);
     }
 
     @Override
@@ -76,9 +77,10 @@ public class DBHelper extends SQLiteOpenHelper {
         );
     }
 
-    public void updateRemainderId (int id){
+    private void updateRemainderId (int row, int id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(REMAINDERS_TABLE_PRIMARYKEY_COLUMN_ROW, row);
         contentValues.put(REMAINDERS_TABLE_PRIMARYKEY_COLUMN_ID, id);
         db.insert(REMAINDERS_TABLE_PRIMARYKEY, null, contentValues);
     }
@@ -88,6 +90,16 @@ public class DBHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.execSQL("DROP TABLE IF EXISTS contacts");
         onCreate(db);
+    }
+
+    public boolean insertRemId (int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(REMAINDERS_TABLE_PRIMARYKEY_COLUMN_ID, id);
+        String whereClause = REMAINDERS_TABLE_PRIMARYKEY_COLUMN_ROW+" = ?";
+        String[] whereArguments = new String[] {"0"};
+        db.update(REMAINDERS_TABLE_PRIMARYKEY, contentValues, whereClause, whereArguments);
+        return true;
     }
 
     public boolean insertRemainder  (int id, String desc, String type, String date, String time, int recurrent)

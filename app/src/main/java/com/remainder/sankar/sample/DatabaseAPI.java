@@ -37,7 +37,9 @@ public class DatabaseAPI {
     public boolean insertNewRemainder (String desc, String type, String date, String time, int recurrency){
         int remId = db.getLastRemainderId();
         remId = remId + 1;
-        return db.insertRemainder (remId, desc, type, date, time, 1);
+        db.insertRemainder (remId, desc, type, date, time, 1);
+        db.insertRemId(remId);
+        return true;
     }
 
     public String getRemainder (Activity activity){
@@ -54,7 +56,7 @@ public class DatabaseAPI {
     }
 
     public String getAllRemainder (String date){
-        return db.getAllRemainder();
+        return db.getAllRemainder(date);
     }
 
 
