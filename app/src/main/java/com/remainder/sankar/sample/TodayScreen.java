@@ -1,6 +1,10 @@
 package com.remainder.sankar.sample;
 
 import android.app.ActionBar;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -74,7 +78,7 @@ public class TodayScreen extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                System.out.println("Text changed to:"+s.toString());
+                System.out.println("Text changed to:" + s.toString());
                 System.out.println("Date to search:" + s.toString());
                 String result = db.getAllRemainder(s.toString());
                 System.out.println("GOT result:*************" + result);

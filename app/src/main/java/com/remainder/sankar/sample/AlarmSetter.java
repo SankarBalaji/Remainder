@@ -23,9 +23,9 @@ public class AlarmSetter extends BroadcastReceiver {
         cal.setTimeInMillis(System.currentTimeMillis());
 
 
-        /*mgr.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+        mgr.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
                 30 * 1000,
-                getPendingIntent(ctxt));*/;
+                getPendingIntent(ctxt));
     }
 
     private static PendingIntent getPendingIntent(Context ctxt) {
