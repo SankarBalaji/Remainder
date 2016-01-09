@@ -32,6 +32,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //New Remainders table
     private static final String REMAINDERS_COLUMN_ID = "Id";
     private static final String REMAINDERS_COLUMN_DESCRIPTION = "Description";
+    private static final String REMAINDERS_COLUMN_LONG_DESCRIPTION = "LongDescription";
     private static final String REMAINDERS_COLUMN_TYPE = "Type";
     private static final String REMAINDERS_COLUMN_DATE = "Date";
     private static final String REMAINDERS_COLUMN_TIME = "Time";
@@ -60,6 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "create table " + REMAINDERS_TABLE_NAME +
                         "("+REMAINDERS_COLUMN_ID+" integer primary key, "
                         +REMAINDERS_COLUMN_DESCRIPTION+" text,"
+                        +REMAINDERS_COLUMN_LONG_DESCRIPTION+" text,"
                         +REMAINDERS_COLUMN_TYPE+" text,"
                         +REMAINDERS_COLUMN_DATE+" text,"
                         +REMAINDERS_COLUMN_TIME+" text,"
@@ -102,12 +104,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean insertRemainder  (int id, String desc, String type, String date, String time, int recurrent)
+    public boolean insertRemainder  (int id, String desc, String longDesc, String type, String date, String time, int recurrent)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(REMAINDERS_COLUMN_ID, id);
         contentValues.put(REMAINDERS_COLUMN_DESCRIPTION, desc);
+        contentValues.put(REMAINDERS_COLUMN_LONG_DESCRIPTION, longDesc);
         contentValues.put(REMAINDERS_COLUMN_TYPE, type);
         contentValues.put(REMAINDERS_COLUMN_DATE, date);
         contentValues.put(REMAINDERS_COLUMN_TIME, time);
@@ -165,6 +168,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String tableToQuery =  REMAINDERS_TABLE_NAME;
         String[] columnsToReturn = new String[] {REMAINDERS_COLUMN_ID, REMAINDERS_COLUMN_DESCRIPTION,
+                REMAINDERS_COLUMN_LONG_DESCRIPTION,
                 REMAINDERS_COLUMN_TYPE,REMAINDERS_COLUMN_DATE,REMAINDERS_COLUMN_TIME, REMAINDERS_COLUMN_RECURRENT};
         String selection = REMAINDERS_COLUMN_DATE+" =?";
         String[] selectionArgs = {date};
@@ -177,6 +181,7 @@ public class DBHelper extends SQLiteOpenHelper {
             str.append("******************");
             str.append("ID:"+res.getInt(res.getColumnIndex(REMAINDERS_COLUMN_ID)));
             str.append("Desc:" + res.getString(res.getColumnIndex(REMAINDERS_COLUMN_DESCRIPTION)));
+            str.append("LongDesc:"+res.getString(res.getColumnIndex(REMAINDERS_COLUMN_LONG_DESCRIPTION)));
             str.append("type:" + res.getString(res.getColumnIndex(REMAINDERS_COLUMN_TYPE)));
             str.append("date:" + res.getString(res.getColumnIndex(REMAINDERS_COLUMN_DATE)));
             str.append("time:" + res.getString(res.getColumnIndex(REMAINDERS_COLUMN_TIME)));

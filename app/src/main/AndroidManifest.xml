@@ -23,15 +23,15 @@
         <activity
             android:name=".NewRemainder"
             android:label="@string/title_activity_new_remainder"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ContactListActvity"
             android:label="@string/title_activity_contact_list_actvity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".IndividualContactActivity"
             android:label="IndividualContactActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -40,11 +40,15 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <receiver android:name=".OnAlarmReceiver" />
+        <receiver android:name=".AlarmActivity" />
 
         <activity
             android:name=".NotificationActivity"
             android:label="@string/title_activity_notification"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NotificationHandlingActivity"
+            android:label="@string/title_activity_notification_handling"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

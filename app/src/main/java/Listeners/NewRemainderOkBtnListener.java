@@ -1,10 +1,12 @@
 package Listeners;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.remainder.sankar.sample.AlarmActivity;
 import com.remainder.sankar.sample.DatabaseAPI;
 import com.remainder.sankar.sample.R;
 import com.remainder.sankar.sample.TodayScreen;
@@ -12,6 +14,8 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.util.Calendar;
 
+import Utils.AlarmNotification;
+import Utils.AppUtils;
 import Utils.Month;
 
 /**
@@ -19,14 +23,19 @@ import Utils.Month;
  */
 public class NewRemainderOkBtnListener extends AbstractListener {
 
+    private Activity contextActivity ;
+
     public NewRemainderOkBtnListener (AppCompatActivity activity){
         super (activity);
+        contextActivity = activity;
     }
     @Override
     public void onClick(View v) {
 
         EditText descText = (EditText)this.listenerActivity.findViewById(R.id.fName);
         String desc= descText.getText().toString();
+        //EditText longText = (EditText)this.listenerActivity.findViewById(R.id.longDescription);
+        String longDesc= "";//longText.getText().toString();
         MaterialBetterSpinner spinner = (MaterialBetterSpinner)this.listenerActivity.findViewById(R.id.type);
         String type = spinner.getText().toString();
         EditText dateText = (EditText)this.listenerActivity.findViewById(R.id.start_date);
@@ -38,7 +47,8 @@ public class NewRemainderOkBtnListener extends AbstractListener {
 
         System.out.println("**************************");
         System.out.println("Ok clicked");
-        System.out.println("Desc:"+desc);
+        System.out.println("sDesc:"+desc);
+        System.out.println("lDesc:"+longDesc);
         System.out.println("Type:"+type);
         System.out.println("Date:"+date);
         System.out.println("Time:"+time);
@@ -46,7 +56,19 @@ public class NewRemainderOkBtnListener extends AbstractListener {
         System.out.println("**************************");
         DatabaseAPI db = DatabaseAPI.getDatabaseHandler(TodayScreen.dbContext);
         if (validateInputs (desc, date, time, phoneNumber)) {
-            db.insertNewRemainder(desc, type, date, time, 1);
+            db.insertNewRemainder(desc, longDesc, type, date, time, 1);
+            int notificationId = db.getLastRemainderId ();
+            AlarmNotification notification = new AlarmNotification.AlarmBuilder(contextActivity)
+                    .setCustomAction(null)
+                    .setShortDesc(desc)
+                    .setLongDesc(longDesc)
+                    .setDate(date)
+                    .setTime(time)
+                    .setPhoneNumber(phoneNumber)
+                    .setType(type)
+                    .setActionCode(AppUtils.getActionCode(type))
+                    .setNotificationId(notificationId).build();
+            AlarmActivity.setAlarm(notification);
             this.listenerActivity.finish();
         }
     }

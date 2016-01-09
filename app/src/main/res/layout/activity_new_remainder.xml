@@ -89,6 +89,10 @@
         android:text="Recurrent"
         android:textAlignment="gravity"
         />
+    <!-- EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/longDescription"/ -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

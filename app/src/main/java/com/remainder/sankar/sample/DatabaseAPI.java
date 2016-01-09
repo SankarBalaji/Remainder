@@ -34,10 +34,14 @@ public class DatabaseAPI {
         db.clearTablesOnInstall();
     }
 
-    public boolean insertNewRemainder (String desc, String type, String date, String time, int recurrency){
+    public int getLastRemainderId (){
+        return db.getLastRemainderId();
+    }
+
+    public boolean insertNewRemainder (String desc,String longDesc, String type, String date, String time, int recurrency){
         int remId = db.getLastRemainderId();
         remId = remId + 1;
-        db.insertRemainder (remId, desc, type, date, time, 1);
+        db.insertRemainder (remId, desc,longDesc, type, date, time, 1);
         db.insertRemId(remId);
         return true;
     }

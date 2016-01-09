@@ -29,7 +29,7 @@ import Utils.AppConstants;
 
 public class NewRemainder extends AppCompatActivity {
     private static final String[] TYPE = new String[] {
-            "PHONE", "MESSAGE"
+            "PHONE", "MESSAGE", "OTHER"
     };
     LinearLayout contactsLayout;
 

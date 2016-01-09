@@ -1,16 +1,81 @@
 package com.remainder.sankar.sample;
 
-import android.app.Activity;
-import android.os.Bundle;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
+import java.util.Calendar;
+
+import Utils.AlarmNotification;
+import Utils.AppUtils;
 
 /**
  * Created by root on 7/1/16.
  */
-public class AlarmActivity extends Activity {
-
+public class AlarmActivity extends BroadcastReceiver {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        System.out.println("Alarm activity started");
+    public void onReceive(Context context, Intent intent) {
+
+        /*Intent i=new Intent(context, AlarmActivity.class);
+
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);*/
+        System.out.println("*******************************");
+        System.out.println("I am alarmed");
+        System.out.println("*******************************");
+
+        String sDesc = intent.getStringExtra("sDesc");
+        System.out.println("S desc:"+sDesc);
+        String lDesc = intent.getStringExtra("lDesc");
+        lDesc = "";
+        String phoneNumber = intent.getStringExtra("phoneNumber");
+        phoneNumber = "9047165257";
+        int actionCode = intent.getIntExtra("action", 0);
+
+        // use System.currentTimeMillis() to have a unique ID for the pending intent
+        Intent i = new Intent(context, NotificationHandlingActivity.class);
+        i.putExtra("action", actionCode);
+        i.putExtra("phoneNumber", phoneNumber);
+        PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), i, 0);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification n  = new Notification.Builder(context).setContentTitle("MyRemainder").setContentText(sDesc)
+                .setAutoCancel(true)
+                .setContentIntent(pIntent)
+                .setStyle(new Notification.BigTextStyle().bigText(lDesc))
+                .setSmallIcon(R.drawable.alarm).build();
+        notificationManager.notify(0, n);
+        //context.startActivity(i);
+    }
+
+    public static void setAlarm(AlarmNotification notification) {
+        Context ctxt = notification.getContext();
+        AlarmManager mgr=(AlarmManager)ctxt.getSystemService(Context.ALARM_SERVICE);
+        String date = notification.getDate();
+        String time = notification.getTime();
+
+        Calendar c = AppUtils.getTime(date, time);
+        mgr.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), getPendingIntentForAlarm(notification));
+
+
+/*        mgr.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+                30 * 1000,
+                getPendingIntent(ctxt));*/
+    }
+
+    private static PendingIntent getPendingIntentForNotification (Context context, Intent i) {
+
+        return(PendingIntent.getBroadcast(context, (int)System.currentTimeMillis() , i, 0));
+    }
+
+    private static PendingIntent getPendingIntentForAlarm(AlarmNotification notification) {
+        Intent i=new Intent(notification.getContext(), AlarmActivity.class);
+        i.putExtra("action", notification.getActionCode());
+        i.putExtra("phoneNumber", notification.getPhoneNumber());
+        i.putExtra("sDesc", notification.getsDesc());
+        i.putExtra("lDesc", notification.getlDesc());
+        return(PendingIntent.getBroadcast(notification.getContext(), notification.getNotificationId() , i, 0));
     }
 }
