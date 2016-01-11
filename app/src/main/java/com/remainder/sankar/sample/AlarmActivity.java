@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Icon;
 
 import java.util.Calendar;
 
@@ -29,25 +30,50 @@ public class AlarmActivity extends BroadcastReceiver {
 
         String sDesc = intent.getStringExtra("sDesc");
         System.out.println("S desc:"+sDesc);
-        String lDesc = intent.getStringExtra("lDesc");
-        lDesc = "";
+        String lDesc = "";//intent.getStringExtra("lDesc");
         String phoneNumber = intent.getStringExtra("phoneNumber");
-        phoneNumber = "9047165257";
         int actionCode = intent.getIntExtra("action", 0);
+
 
         // use System.currentTimeMillis() to have a unique ID for the pending intent
         Intent i = new Intent(context, NotificationHandlingActivity.class);
         i.putExtra("action", actionCode);
         i.putExtra("phoneNumber", phoneNumber);
         PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), i, 0);
+
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification n  = new Notification.Builder(context).setContentTitle("MyRemainder").setContentText(sDesc)
                 .setAutoCancel(true)
                 .setContentIntent(pIntent)
                 .setStyle(new Notification.BigTextStyle().bigText(lDesc))
-                .setSmallIcon(R.drawable.alarm).build();
+                .setSmallIcon(R.drawable.alarm)
+                .addAction(getAction (actionCode, pIntent))
+                .addAction(getAction(-1, pIntent)).build();
         notificationManager.notify(0, n);
         //context.startActivity(i);
+    }
+
+    public Notification.Action getAction (int actionCode, PendingIntent pIntent ){
+        Notification.Action action = null;
+        String title = "";
+        int icon = -1;
+        switch (actionCode){
+            case 0:
+                title = "Call";
+                icon = R.drawable.call;
+                break;
+            case 1:
+                title = "Message";
+                icon =  R.drawable.message;
+                break;
+            default:
+                title = "Dismiss";
+                icon = R.drawable.dismiss;
+                break;
+
+        }
+        action = new Notification.Action.Builder(icon, title, pIntent).build();
+        return action;
     }
 
     public static void setAlarm(AlarmNotification notification) {
