@@ -34,8 +34,10 @@ public class NewRemainderOkBtnListener extends AbstractListener {
 
         EditText descText = (EditText)this.listenerActivity.findViewById(R.id.fName);
         String desc= descText.getText().toString();
-        //EditText longText = (EditText)this.listenerActivity.findViewById(R.id.longDescription);
-        String longDesc= "";//longText.getText().toString();
+        //Edit Text for Long Description
+        EditText longDescriptionTextView = (EditText)this.listenerActivity.findViewById(R.id.longDescription);
+        String lDescription = longDescriptionTextView.getText().toString();
+
         MaterialBetterSpinner spinner = (MaterialBetterSpinner)this.listenerActivity.findViewById(R.id.type);
         String type = spinner.getText().toString();
         EditText dateText = (EditText)this.listenerActivity.findViewById(R.id.start_date);
@@ -48,7 +50,7 @@ public class NewRemainderOkBtnListener extends AbstractListener {
         System.out.println("**************************");
         System.out.println("Ok clicked");
         System.out.println("sDesc:"+desc);
-        System.out.println("lDesc:"+longDesc);
+        System.out.println("lDesc:"+lDescription);
         System.out.println("Type:"+type);
         System.out.println("Date:"+date);
         System.out.println("Time:"+time);
@@ -56,12 +58,12 @@ public class NewRemainderOkBtnListener extends AbstractListener {
         System.out.println("**************************");
         DatabaseAPI db = DatabaseAPI.getDatabaseHandler(TodayScreen.dbContext);
         if (validateInputs (desc, date, time, phoneNumber)) {
-            db.insertNewRemainder(desc, longDesc, type, date, time, 1);
+            db.insertNewRemainder(desc, lDescription, type, date, time, 1);
             int notificationId = db.getLastRemainderId ();
             AlarmNotification notification = new AlarmNotification.AlarmBuilder(contextActivity)
                     .setCustomAction(null)
                     .setShortDesc(desc)
-                    .setLongDesc(longDesc)
+                    .setLongDesc(lDescription)
                     .setDate(date)
                     .setTime(time)
                     .setPhoneNumber(phoneNumber)

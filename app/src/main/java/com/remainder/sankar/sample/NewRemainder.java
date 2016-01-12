@@ -45,11 +45,6 @@ public class NewRemainder extends AppCompatActivity {
         DateClickListener dateListener = new DateClickListener(getFragmentManager(), startDateView);
         startDateView.setOnClickListener(dateListener);
 
-        //Contacts
-        //contactsLayout = (LinearLayout)findViewById(R.id.contacts_test);
-        //ContentResolver contactsResolver = getContentResolver();
-        //Cursor contacts = contactsResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-
         //Phone number fetcher
         final View contacts = findViewById (R.id.fetch_contacts);
         contacts.setEnabled(false);
