@@ -38,6 +38,7 @@ public class AlarmActivity extends BroadcastReceiver {
         i.putExtra("phoneNumber", phoneNumber);
         PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), i, 0);
 
+
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification n  = new Notification.Builder(context).setContentTitle("MyRemainder").setContentText(sDesc)
                 .setAutoCancel(true)
@@ -65,6 +66,7 @@ public class AlarmActivity extends BroadcastReceiver {
                 break;
             case 1:
                 title = "Message";
+                System.out.println("Going to Send Message ??????????????????");
                 icon =  R.drawable.message;
                 Uri sms_uri = Uri.parse("smsto:"+phoneNumber);
                 Intent sms_intent = new Intent(Intent.ACTION_SENDTO, sms_uri);

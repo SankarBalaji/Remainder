@@ -167,6 +167,7 @@ public class AlarmNotification {
             alarm.setPhoneNumber(this.phoneNumber);
             alarm.setContext(this.context);
             alarm.setNotificationId(this.notificationId);
+            alarm.setActionCode(this.actionCode);
             return alarm;
         }
 
