@@ -55,7 +55,7 @@ public class NewRemainder extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.isEnabled()) {
-                    Intent myIntent = new Intent(NewRemainder.this, ContactListActvity.class);
+                    Intent myIntent = new Intent(NewRemainder.this, ListContactsActivity.class);
                     startActivityForResult(myIntent, AppConstants.REQUEST_NEWREM_CONTACTLIST);
                 } else {
                     //Do nothing
