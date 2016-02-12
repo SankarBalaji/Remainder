@@ -122,7 +122,7 @@ public class ListContactsActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("phonenumber",phonenumber);
                 setResult(AppConstants.RESULT_SUCCESS, intent);
-                finish();
+                finish(); //Success?
             }
         }
     }
