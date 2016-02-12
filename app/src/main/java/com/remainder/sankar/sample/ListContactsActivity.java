@@ -113,6 +113,20 @@ public class ListContactsActivity extends AppCompatActivity {
         }
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppConstants.REQUEST_CONTACTLIST_CONTACT) {
+            if(resultCode == AppConstants.RESULT_SUCCESS){
+                String phonenumber=data.getStringExtra("phonenumber");
+
+                Intent intent = new Intent();
+                intent.putExtra("phonenumber",phonenumber);
+                setResult(AppConstants.RESULT_SUCCESS, intent);
+                finish();
+            }
+        }
+    }
+
     private class SearchContactTextWatcher implements TextWatcher {
 
         @Override
